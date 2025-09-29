@@ -1,6 +1,6 @@
 import { Text } from '@/components/ui/text';
 import { Link } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FlatList, Pressable, View } from 'react-native';
 import { Restaurant } from '../interfaces/restaurant.interface';
 import { CuisineType } from '@/interfaces/cuisineType.interface';
@@ -9,15 +9,6 @@ import { SearchBar } from '@/components/searchBar';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRestaurantsQuery } from '@/hooks/useRestaurant';
 import { useCuisineType } from '@/hooks/useCuisineType';
-import { AppState, Platform } from 'react-native'
-import type { AppStateStatus } from 'react-native'
-import { focusManager } from '@tanstack/react-query'
-
-function onAppStateChange(status: AppStateStatus) {
-  if (Platform.OS !== 'web') {
-    focusManager.setFocused(status === 'active')
-  }
-}
 
 export default function Screen() {
   const insets = useSafeAreaInsets();
@@ -39,15 +30,11 @@ export default function Screen() {
     });
   };
 
-  useEffect(() => {
-    const subscription = AppState.addEventListener('change', onAppStateChange)
-    return () => subscription.remove()
-  }, [])
-
   return (
     <SafeAreaView
       className="flex-1 justify-start bg-white dark:bg-black"
       edges={['top', 'left', 'right']}>
+      {/* todo fix this height */}
       <View style={{ marginTop: insets.top + 26 }}>
         <CuisineTypeTags
           onPress={handlePress}

@@ -9,7 +9,9 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { MoonStarIcon, SunIcon } from 'lucide-react-native';
 import { useColorScheme } from 'nativewind';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { focusManager, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { AppState, AppStateStatus, Platform } from 'react-native';
+import { useEffect } from 'react';
 
 export { ErrorBoundary } from 'expo-router';
 
@@ -19,6 +21,12 @@ const THEME_ICONS = {
 };
 
 const queryClient = new QueryClient();
+
+function onAppStateChange(status: AppStateStatus) {
+  if (Platform.OS !== 'web') {
+    focusManager.setFocused(status === 'active')
+  }
+}
 
 function ThemeToggle() {
   const { colorScheme, toggleColorScheme } = useColorScheme();
@@ -54,6 +62,12 @@ const SCREEN_OPTIONS = {
 export default function RootLayout() {
   const { colorScheme } = useColorScheme();
   const options = SCREEN_OPTIONS[colorScheme ?? 'light'];
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', onAppStateChange)
+    return () => subscription.remove()
+  }, [])
+
 
   return (
     <ThemeProvider value={NAV_THEME[colorScheme ?? 'light']}>
