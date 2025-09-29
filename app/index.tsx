@@ -13,8 +13,8 @@ import { useCuisineType } from '@/hooks/useCuisineType';
 export default function Screen() {
   const insets = useSafeAreaInsets();
   const [selectedCuisinesIds, setSelectedCuisinesIds] = useState<string[]>([]);
-  const [search, setSearch] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [search, setSearch] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
   const { data: restaurants = [], isLoading: restaurantsLoading } = useRestaurantsQuery({
     name: searchQuery,
     cuisineTypeIds: selectedCuisinesIds,
@@ -25,10 +25,10 @@ export default function Screen() {
   const isLoading = restaurantsLoading || cuisinesLoading;
 
   const handlePress = (cuisineType: CuisineType) => {
-    setSelectedCuisinesIds(cuisineTypeIds => {
+    setSelectedCuisinesIds((cuisineTypeIds) => {
       const isSelected = cuisineTypeIds.includes(cuisineType.id);
       return isSelected
-        ? cuisineTypeIds.filter(id => id !== cuisineType.id)
+        ? cuisineTypeIds.filter((id) => id !== cuisineType.id)
         : [...cuisineTypeIds, cuisineType.id];
     });
   };
@@ -42,7 +42,9 @@ export default function Screen() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-white dark:bg-black justify-start" edges={['top', 'left', 'right']}>
+    <SafeAreaView
+      className="flex-1 justify-start bg-white dark:bg-black"
+      edges={['top', 'left', 'right']}>
       <View style={{ marginTop: insets.top + 26 }}>
         <CuisineTypeTags
           onPress={handlePress}
@@ -61,10 +63,12 @@ export default function Screen() {
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 32 }}
         renderItem={({ item }: { item: Restaurant }) => (
           <Link href={`/restaurant/${item.id}`} asChild>
-            <Pressable className="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 mb-4 shadow-md">
+            <Pressable className="mb-4 rounded-xl bg-gray-100 p-4 shadow-md dark:bg-gray-800">
               <Text className="text-lg font-bold text-gray-900 dark:text-white">{item.name}</Text>
-              <Text className="text-gray-600 dark:text-gray-300 mt-1">{item.description}</Text>
-              <Text className="italic text-gray-600 dark:text-gray-300 mt-1">{item?.cuisineType?.description}</Text>
+              <Text className="mt-1 text-gray-600 dark:text-gray-300">{item.description}</Text>
+              <Text className="mt-1 italic text-gray-600 dark:text-gray-300">
+                {item?.cuisineType?.description}
+              </Text>
             </Pressable>
           </Link>
         )}

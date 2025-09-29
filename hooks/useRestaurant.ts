@@ -10,8 +10,8 @@ export function useRestaurantByIdQuery(id: string) {
   });
 }
 
-export function useRestaurantsQuery ({ name, cuisineTypeIds }: GetRestaurantDTO) {
- return useQuery({
+export function useRestaurantsQuery({ name, cuisineTypeIds }: GetRestaurantDTO) {
+  return useQuery({
     queryKey: ['restaurants', cuisineTypeIds, name],
     queryFn: () => getRestaurants({ name, cuisineTypeIds }),
   });

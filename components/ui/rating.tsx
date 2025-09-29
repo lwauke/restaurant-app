@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { View, Pressable } from "react-native";
-import { Star } from "lucide-react-native";
-import { Text } from "@/components/ui/text";
+import { useState } from 'react';
+import { View, Pressable } from 'react-native';
+import { Star } from 'lucide-react-native';
+import { Text } from '@/components/ui/text';
 
 type RatingProps = {
   max?: number;
@@ -18,7 +18,7 @@ export function Rating({ max = 5, initial = 0, onChange }: RatingProps) {
   };
 
   return (
-    <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
       {Array.from({ length: max }).map((_, i) => {
         const value = i + 1;
         const filled = value <= rating;
@@ -26,13 +26,15 @@ export function Rating({ max = 5, initial = 0, onChange }: RatingProps) {
           <Pressable key={value} onPress={() => handlePress(value)}>
             <Star
               size={32}
-              color={filled ? "gold" : "gray"}
-              fill={filled ? "gold" : "transparent"}
+              color={filled ? 'gold' : 'gray'}
+              fill={filled ? 'gold' : 'transparent'}
             />
           </Pressable>
         );
       })}
-      <Text style={{ marginLeft: 8 }}>{rating}/{max}</Text>
+      <Text style={{ marginLeft: 8 }}>
+        {rating}/{max}
+      </Text>
     </View>
   );
 }

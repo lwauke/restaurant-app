@@ -41,7 +41,7 @@ export default function RatingScreen() {
       <Textarea placeholder="Leave a comment" onChangeText={setComment} value={comment} />
 
       <Button onPress={handleSubmit} disabled={isPending} className="w-full justify-center">
-        <Text className="text-white dark:text-black text-center">
+        <Text className="text-center text-white dark:text-black">
           {isPending ? 'Submitting...' : 'Submit'}
         </Text>
       </Button>

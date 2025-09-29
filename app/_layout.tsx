@@ -11,9 +11,7 @@ import { MoonStarIcon, SunIcon } from 'lucide-react-native';
 import { useColorScheme } from 'nativewind';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-export {
-  ErrorBoundary,
-} from 'expo-router';
+export { ErrorBoundary } from 'expo-router';
 
 const THEME_ICONS = {
   light: SunIcon,
@@ -30,8 +28,7 @@ function ThemeToggle() {
       onPressIn={toggleColorScheme}
       size="icon"
       variant="ghost"
-      className="rounded-full web:mx-4"
-    >
+      className="rounded-full web:mx-4">
       <Icon as={THEME_ICONS[colorScheme ?? 'light']} className="size-5" />
     </Button>
   );
@@ -64,8 +61,8 @@ export default function RootLayout() {
         <Stack>
           <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
           <Stack.Screen name="index" options={options} />
-          <Stack.Screen name="restaurant" options={ options }/>
-          <Stack.Screen name="rating" options={options}/>
+          <Stack.Screen name="restaurant" options={options} />
+          <Stack.Screen name="rating" options={options} />
         </Stack>
         <PortalHost />
       </QueryClientProvider>

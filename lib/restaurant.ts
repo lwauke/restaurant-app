@@ -1,5 +1,5 @@
-import { Rating } from "@/interfaces/rating.interface";
-import { sum } from "./utils";
+import { Rating } from '@/interfaces/rating.interface';
+import { sum } from './utils';
 
 export const getRatingAverage = (rates: Rating[]) => {
   const totalStars = rates.map(({ stars }) => stars);
@@ -10,4 +10,4 @@ export const getRatingAverage = (rates: Rating[]) => {
     return rates[0].stars;
   }
   return sum(...totalStars) / rates.length;
-}
+};

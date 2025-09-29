@@ -1,11 +1,11 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { submitRating } from "@/api/rating";
-import { SubmitRatingDTO } from "@/dtos/submitRating.dto";
-import { Rating } from "@/interfaces/rating.interface";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { submitRating } from '@/api/rating';
+import { SubmitRatingDTO } from '@/dtos/submitRating.dto';
+import { Rating } from '@/interfaces/rating.interface';
 
 export function useSubmitRating(restaurantId: string) {
   const queryClient = useQueryClient();
-  const restaurantQueryKey = "restaurantById";
+  const restaurantQueryKey = 'restaurantById';
 
   return useMutation({
     mutationFn: (data: SubmitRatingDTO) => submitRating(data),
@@ -33,18 +33,12 @@ export function useSubmitRating(restaurantId: string) {
     },
     onError: (_err, _newRating, context) => {
       if (context?.previousRestaurant) {
-        queryClient.setQueryData(
-          [restaurantQueryKey, restaurantId],
-          context.previousRestaurant
-        );
+        queryClient.setQueryData([restaurantQueryKey, restaurantId], context.previousRestaurant);
       }
     },
     onSettled: () => {
       queryClient.invalidateQueries({
-        queryKey: [
-          restaurantQueryKey,
-          restaurantId
-        ]
+        queryKey: [restaurantQueryKey, restaurantId],
       });
     },
   });
