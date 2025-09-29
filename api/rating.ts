@@ -12,6 +12,5 @@ export async function submitRating({
       restaurantId,
       date: new Date().toISOString()
     });
-    console.log('submited')
     return data;
 }

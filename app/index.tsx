@@ -6,7 +6,7 @@ import { Link, Stack } from 'expo-router';
 import { MoonStarIcon, SunIcon } from 'lucide-react-native';
 import { useColorScheme } from 'nativewind';
 import { useEffect, useState } from 'react';
-import { Image, type ImageStyle, View, FlatList, Pressable } from 'react-native';
+import { Image, type ImageStyle, View, FlatList, Pressable, SafeAreaView } from 'react-native';
 import { getRestaurants } from '../api/restaurants';
 import { Restaurant } from '../interfaces/restaurant';
 
@@ -46,41 +46,46 @@ export default function Screen() {
     getRestaurants()
       .then(setRestaurants)
       .then(() => setLoading(false))
-      .catch(console.log)
+      .catch(console.log);
   }, []);
 
   if (loading) {
     return (
       <>
         <Stack.Screen options={SCREEN_OPTIONS[colorScheme ?? 'light']} />
-        <View className="flex-1 items-center justify-center gap-8 p-4">
-          <Text>Loading</Text>
-        </View>
+        <SafeAreaView className="flex-1 items-center justify-center p-4">
+          <Text>Loading...</Text>
+        </SafeAreaView>
       </>
-    )
+    );
   }
 
   return (
     <>
       <Stack.Screen options={SCREEN_OPTIONS[colorScheme ?? 'light']} />
-      <View className="flex-1 items-center justify-center gap-8 p-4">
-        <Image source={LOGO[colorScheme ?? 'light']} style={IMAGE_STYLE} resizeMode="contain" />
-        <View style={{ flex: 1, padding: 16 }}>
-          <FlatList
-            data={restaurants}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }: { item: Restaurant }) => (
-              <View className="items-center">
-                <Link href={`/restaurant/${item.id}`} asChild>
-                  <Pressable>
-                    <Text className="text-lg font-bold">{item.name}</Text>
-                  </Pressable>
-                </Link>
-              </View>
-            )}
+      <SafeAreaView className="flex-1 bg-white dark:bg-black">
+        <View className="items-center py-4">
+          <Image
+            source={LOGO[colorScheme ?? 'light']}
+            style={IMAGE_STYLE}
+            resizeMode="contain"
           />
         </View>
-      </View>
+
+        <FlatList
+          data={restaurants}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 32 }}
+          renderItem={({ item }: { item: Restaurant }) => (
+            <Link href={`/restaurant/${item.id}`} asChild>
+              <Pressable className="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 mb-4 shadow-md">
+                <Text className="text-lg font-bold text-gray-900 dark:text-white">{item.name}</Text>
+                <Text className="text-gray-600 dark:text-gray-300 mt-1">{item.description}</Text>
+              </Pressable>
+            </Link>
+          )}
+        />
+      </SafeAreaView>
     </>
   );
 }
@@ -98,7 +103,8 @@ function ThemeToggle() {
       onPressIn={toggleColorScheme}
       size="icon"
       variant="ghost"
-      className="rounded-full web:mx-4">
+      className="rounded-full web:mx-4"
+    >
       <Icon as={THEME_ICONS[colorScheme ?? 'light']} className="size-5" />
     </Button>
   );
