@@ -30,7 +30,9 @@ export default function RestaurantScreen() {
     <View className="flex-1 gap-4 p-4">
       <Text className="text-xl font-bold">{restaurant?.name}</Text>
       <Text className="text-gray-600">{restaurant?.description}</Text>
-
+      <Button onPress={() => router.navigate(`/rating/${restaurant?.id}`)}>
+        <Text>Leave Rating</Text>
+      </Button>
       <Text className="mt-4 text-lg font-semibold">Ratings</Text>
       <FlatList
         data={restaurant?.ratings}
@@ -42,10 +44,6 @@ export default function RestaurantScreen() {
           </View>
         )}
       />
-
-      <Button onPress={() => router.navigate(`/rating/${restaurant?.id}`)}>
-        <Text>Leave 5-star Rating</Text>
-      </Button>
     </View>
   );
 }

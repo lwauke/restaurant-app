@@ -9,6 +9,15 @@ import { SearchBar } from '@/components/searchBar';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRestaurantsQuery } from '@/hooks/useRestaurant';
 import { useCuisineType } from '@/hooks/useCuisineType';
+import { AppState, Platform } from 'react-native'
+import type { AppStateStatus } from 'react-native'
+import { focusManager } from '@tanstack/react-query'
+
+function onAppStateChange(status: AppStateStatus) {
+  if (Platform.OS !== 'web') {
+    focusManager.setFocused(status === 'active')
+  }
+}
 
 export default function Screen() {
   const insets = useSafeAreaInsets();
@@ -19,10 +28,7 @@ export default function Screen() {
     name: searchQuery,
     cuisineTypeIds: selectedCuisinesIds,
   });
-
-  const { data: cuisines = [], isLoading: cuisinesLoading } = useCuisineType();
-
-  const isLoading = restaurantsLoading || cuisinesLoading;
+  const { data: cuisines = [], isLoading: cuisinesLoading, error: cuisinesError } = useCuisineType();
 
   const handlePress = (cuisineType: CuisineType) => {
     setSelectedCuisinesIds((cuisineTypeIds) => {
@@ -33,13 +39,10 @@ export default function Screen() {
     });
   };
 
-  if (isLoading) {
-    return (
-      <SafeAreaView className="items-center justify-center p-4">
-        <Text>Loading...</Text>
-      </SafeAreaView>
-    );
-  }
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', onAppStateChange)
+    return () => subscription.remove()
+  }, [])
 
   return (
     <SafeAreaView
@@ -50,6 +53,8 @@ export default function Screen() {
           onPress={handlePress}
           selectedCuisinesIds={selectedCuisinesIds}
           cuisines={cuisines}
+          error={cuisinesError}
+          loading={cuisinesLoading}
         />
       </View>
       <SearchBar

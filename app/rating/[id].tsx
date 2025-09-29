@@ -12,8 +12,7 @@ export default function RatingScreen() {
   const [ratingStars, setRatingStars] = useState(5);
   const [comment, setComment] = useState('');
   const router = useRouter();
-
-  const { mutate, isPending } = useSubmitRating(id!);
+  const { mutate, isPending, error } = useSubmitRating(id!);
 
   const handleSubmit = () => {
     mutate(
@@ -35,16 +34,14 @@ export default function RatingScreen() {
       <Text className="text-lg font-medium text-gray-900 dark:text-white">
         How many stars does {restaurantName} deserve?
       </Text>
-
       <Rating max={5} initial={ratingStars} onChange={setRatingStars} />
-
       <Textarea placeholder="Leave a comment" onChangeText={setComment} value={comment} />
-
       <Button onPress={handleSubmit} disabled={isPending} className="w-full justify-center">
         <Text className="text-center text-white dark:text-black">
           {isPending ? 'Submitting...' : 'Submit'}
         </Text>
       </Button>
+      { error && <Text className="text-center text-white dark:text-black">Failed to send rating</Text>}
     </View>
   );
 }
