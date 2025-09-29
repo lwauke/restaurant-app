@@ -1,17 +1,30 @@
-import { getCuisineTypes } from '@/api/cuisineType';
 import { CuisineType } from '@/interfaces/cuisineType.interface';
 import clsx from 'clsx';
-import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, Pressable, StyleSheet } from 'react-native';
+import React from 'react';
+import { Text, ScrollView } from 'react-native';
 import { Button } from './ui/button';
 
 interface CuisineTypeTagsProps {
   onPress: (cuisines: CuisineType) => void;
   selectedCuisinesIds: string[];
   cuisines: CuisineType[];
+  error: Error | null,
+  loading: boolean
 }
 
-export function CuisineTypeTags({ onPress, selectedCuisinesIds, cuisines }: CuisineTypeTagsProps) {
+export function CuisineTypeTags({
+  onPress,
+  selectedCuisinesIds,
+  cuisines,
+  error,
+  loading
+}: CuisineTypeTagsProps) {
+  if (error) {
+    return <Text>Error fetching cuisine types</Text>
+  }
+  if (loading) {
+    return <Text>Loading</Text>
+  }
   return (
     <ScrollView horizontal showsHorizontalScrollIndicator={false} className="px-4">
       {cuisines.map((cuisine) => {
