@@ -1,21 +1,16 @@
 import { getRatingAverage } from "@/lib/restaurant";
-import { Rating } from "../interfaces/rating.interface";
 import { Restaurant } from "../interfaces/restaurant.interface";
 import { httpClient } from "./axios";
-import qs from 'qs';
 import { GetRestaurantDTO } from "@/dtos/getRestaurants.dto";
 
-export const getRestaurants = async ({name, cuisineTypeId}: GetRestaurantDTO) => {
-  const { data } = await httpClient.get<Restaurant[]>(
-    "/restaurants?_expand=cuisineType",
-    {
-      params: {
-        name_like: name,
-        cuisineTypeId 
-      },
-      paramsSerializer: params => qs.stringify(params, { arrayFormat: 'brackets'})
-    }
-  );
+
+export async function getRestaurants({ name, cuisineTypeIds }: GetRestaurantDTO) {
+  const params: Record<string, string | string[]> = {
+    _expand: 'cuisineType',
+  };
+  if (name) params.name_like = name;
+  if (cuisineTypeIds?.length) params[`cuisineTypeId`] = cuisineTypeIds
+  const { data } = await httpClient.get('/restaurants', { params });
   return data;
 }
 

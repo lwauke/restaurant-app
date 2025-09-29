@@ -1,25 +1,14 @@
-// app/restaurant/[id].tsx
 import { View, FlatList } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useQuery } from "@tanstack/react-query";
-import { getRestaurantById } from "@/api/restaurant";
 import { Text } from "@/components/ui/text";
 import { Rating } from "@/components/ui/rating";
 import { Button } from "@/components/ui/button";
-import { useSubmitRating } from "@/hooks/useSubmitRating";
-import { useRestaurant } from "@/hooks/useRestaurant";
+import { useRestaurantByIdQuery } from "@/hooks/useRestaurant";
 
 export default function RestaurantScreen() {
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
-
-  const { data: restaurant, isLoading, error } = useQuery({
-    queryKey: ["restaurant", id],
-    queryFn: () => getRestaurantById(id),
-    enabled: !!id,
-  });
-
-  const submitRatingMutation = useSubmitRating(id);
+  const { data: restaurant, isLoading, error } = useRestaurantByIdQuery(id);
 
   if (isLoading) {
     return (

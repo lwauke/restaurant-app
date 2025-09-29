@@ -1,38 +1,28 @@
 import { Text } from '@/components/ui/text';
 import { Link } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FlatList, Pressable, View } from 'react-native';
 import { Restaurant } from '../interfaces/restaurant.interface';
 import { CuisineType } from '@/interfaces/cuisineType.interface';
 import { CuisineTypeTags } from '@/components/cuisineTypesTags';
 import { SearchBar } from '@/components/searchBar';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useRestaurants } from '@/hooks/useRestaurants';
-import { useCuisineTypes } from '@/hooks/useCuisineTypes';
+import { useRestaurantsQuery } from '@/hooks/useRestaurant';
+import { useCuisineType } from '@/hooks/useCuisineType';
 
 export default function Screen() {
   const insets = useSafeAreaInsets();
   const [selectedCuisinesIds, setSelectedCuisinesIds] = useState<string[]>([]);
   const [search, setSearch] = useState("");
-
-  // Fetch restaurants with React Query
-  const { data: restaurants = [], isLoading: restaurantsLoading } = useRestaurants({
-    name: search,
+  const [searchQuery, setSearchQuery] = useState("");
+  const { data: restaurants = [], isLoading: restaurantsLoading } = useRestaurantsQuery({
+    name: searchQuery,
     cuisineTypeIds: selectedCuisinesIds,
   });
 
-  // Fetch cuisine types with React Query
-  const { data: cuisines = [], isLoading: cuisinesLoading } = useCuisineTypes();
+  const { data: cuisines = [], isLoading: cuisinesLoading } = useCuisineType();
 
   const isLoading = restaurantsLoading || cuisinesLoading;
-
-  if (isLoading) {
-    return (
-      <SafeAreaView className="items-center justify-center p-4">
-        <Text>Loading...</Text>
-      </SafeAreaView>
-    );
-  }
 
   const handlePress = (cuisineType: CuisineType) => {
     setSelectedCuisinesIds(cuisineTypeIds => {
@@ -43,10 +33,13 @@ export default function Screen() {
     });
   };
 
-  const handleSearch = () => {
-    // React Query will automatically refetch when dependencies change
-    // No manual fetch needed
-  };
+  if (isLoading) {
+    return (
+      <SafeAreaView className="items-center justify-center p-4">
+        <Text>Loading...</Text>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-white dark:bg-black justify-start" edges={['top', 'left', 'right']}>
@@ -60,7 +53,7 @@ export default function Screen() {
       <SearchBar
         placeholder="Restaurant"
         onChangeText={setSearch}
-        onSubmit={handleSearch}
+        onSubmit={() => setSearchQuery(search)}
       />
       <FlatList
         data={restaurants}

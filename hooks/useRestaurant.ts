@@ -1,10 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
-import { getRestaurantById } from '@/api/restaurant';
+import { getRestaurantById, getRestaurants } from '@/api/restaurant';
+import { GetRestaurantDTO } from '@/dtos/getRestaurants.dto';
 
-export function useRestaurant(id?: string) {
+export function useRestaurantByIdQuery(id: string) {
   return useQuery({
-    queryKey: ['restaurant', id],
+    queryKey: ['restaurantById', id],
     queryFn: () => getRestaurantById(id!),
     enabled: !!id,
+  });
+}
+
+export function useRestaurantsQuery ({ name, cuisineTypeIds }: GetRestaurantDTO) {
+ return useQuery({
+    queryKey: ['restaurants', cuisineTypeIds, name],
+    queryFn: () => getRestaurants({ name, cuisineTypeIds }),
   });
 }
