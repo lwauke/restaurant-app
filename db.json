@@ -1,37 +1,198 @@
 {
   "restaurants": [
-    { "id": "1", "name": "Mario's Italian Bistro", "description": "Authentic family-style Italian cuisine", "cuisineTypeId": "1" },
-    { "id": "2", "name": "Sakura Sushi House", "description": "Fresh sushi and sashimi prepared daily", "cuisineTypeId": "2" },
-    { "id": "3", "name": "El Taco Loco", "description": "Traditional Mexican street food with a twist", "cuisineTypeId": "3" },
-    { "id": "4", "name": "Bombay Spice", "description": "Bold Indian flavors and aromatic spices", "cuisineTypeId": "4" },
-    { "id": "5", "name": "Le Petit Café", "description": "Cozy French café with pastries and coffee", "cuisineTypeId": "5" }
+    {
+      "id": "1",
+      "name": "Mario's Italian Bistro",
+      "description": "Authentic family-style Italian cuisine",
+      "cuisineTypeId": "1"
+    },
+    {
+      "id": "2",
+      "name": "Sakura Sushi House",
+      "description": "Fresh sushi and sashimi prepared daily",
+      "cuisineTypeId": "2"
+    },
+    {
+      "id": "3",
+      "name": "El Taco Loco",
+      "description": "Traditional Mexican street food with a twist",
+      "cuisineTypeId": "3"
+    },
+    {
+      "id": "4",
+      "name": "Bombay Spice",
+      "description": "Bold Indian flavors and aromatic spices",
+      "cuisineTypeId": "4"
+    },
+    {
+      "id": "5",
+      "name": "Le Petit Café",
+      "description": "Cozy French café with pastries and coffee",
+      "cuisineTypeId": "5"
+    }
   ],
   "cuisineTypes": [
-    { "id": "1", "description": "Italian" },
-    { "id": "2", "description": "Japanese" },
-    { "id": "3", "description": "Mexican" },
-    { "id": "4", "description": "Indian" },
-    { "id": "5", "description": "French" }
+    {
+      "id": "1",
+      "description": "Italian"
+    },
+    {
+      "id": "2",
+      "description": "Japanese"
+    },
+    {
+      "id": "3",
+      "description": "Mexican"
+    },
+    {
+      "id": "4",
+      "description": "Indian"
+    },
+    {
+      "id": "5",
+      "description": "French"
+    }
   ],
   "ratings": [
-    { "id": "1", "stars": 5, "comment": "Best pasta I've ever had!", "restaurantId": "1", "date": "2025-09-20" },
-    { "id": "2", "stars": 4, "comment": "Great food but service was a bit slow.", "restaurantId": "1", "date": "2025-09-21" },
-    { "id": "3", "stars": 3, "comment": "Food was okay, nothing special.", "restaurantId": "1", "date": "2025-09-22" },
-
-    { "id": "4", "stars": 5, "comment": "Fresh sushi and excellent presentation.", "restaurantId": "2", "date": "2025-09-18" },
-    { "id": "5", "stars": 4, "comment": "Nice place, but portions are small.", "restaurantId": "2", "date": "2025-09-19" },
-    { "id": "6", "stars": 5, "comment": "Amazing sashimi platter!", "restaurantId": "2", "date": "2025-09-20" },
-
-    { "id": "7", "stars": 3, "comment": "Tacos were decent, but I've had better.", "restaurantId": "3", "date": "2025-09-17" },
-    { "id": "8", "stars": 4, "comment": "Great flavors and good price.", "restaurantId": "3", "date": "2025-09-18" },
-    { "id": "9", "stars": 2, "comment": "Service was poor and food was cold.", "restaurantId": "3", "date": "2025-09-19" },
-
-    { "id": "10", "stars": 4, "comment": "Rich curries with strong flavors.", "restaurantId": "4", "date": "2025-09-15" },
-    { "id": "11", "stars": 5, "comment": "Absolutely delicious butter chicken!", "restaurantId": "4", "date": "2025-09-16" },
-    { "id": "12", "stars": 3, "comment": "Food was good but naan was overcooked.", "restaurantId": "4", "date": "2025-09-17" },
-
-    { "id": "13", "stars": 5, "comment": "Best croissants in town!", "restaurantId": "5", "date": "2025-09-14" },
-    { "id": "14", "stars": 4, "comment": "Lovely ambiance and friendly staff.", "restaurantId": "5", "date": "2025-09-15" },
-    { "id": "15", "stars": 5, "comment": "Delicious pastries and coffee.", "restaurantId": "5", "date": "2025-09-16" }
+    {
+      "id": "1",
+      "stars": 5,
+      "comment": "Best pasta I've ever had!",
+      "restaurantId": "1",
+      "date": "2025-09-20T12:00:00.000Z"
+    },
+    {
+      "id": "2",
+      "stars": 4,
+      "comment": "Great food but service was a bit slow.",
+      "restaurantId": "1",
+      "date": "2025-09-21T14:30:00.000Z"
+    },
+    {
+      "id": "3",
+      "stars": 3,
+      "comment": "Food was okay, nothing special.",
+      "restaurantId": "1",
+      "date": "2025-09-22T18:45:00.000Z"
+    },
+    {
+      "id": "4",
+      "stars": 5,
+      "comment": "Fresh sushi and excellent presentation.",
+      "restaurantId": "2",
+      "date": "2025-09-18T11:15:00.000Z"
+    },
+    {
+      "id": "5",
+      "stars": 4,
+      "comment": "Nice place, but portions are small.",
+      "restaurantId": "2",
+      "date": "2025-09-19T13:00:00.000Z"
+    },
+    {
+      "id": "6",
+      "stars": 5,
+      "comment": "Amazing sashimi platter!",
+      "restaurantId": "2",
+      "date": "2025-09-20T16:20:00.000Z"
+    },
+    {
+      "id": "7",
+      "stars": 3,
+      "comment": "Tacos were decent, but I've had better.",
+      "restaurantId": "3",
+      "date": "2025-09-17T10:45:00.000Z"
+    },
+    {
+      "id": "8",
+      "stars": 4,
+      "comment": "Great flavors and good price.",
+      "restaurantId": "3",
+      "date": "2025-09-18T12:30:00.000Z"
+    },
+    {
+      "id": "9",
+      "stars": 2,
+      "comment": "Service was poor and food was cold.",
+      "restaurantId": "3",
+      "date": "2025-09-19T15:10:00.000Z"
+    },
+    {
+      "id": "10",
+      "stars": 4,
+      "comment": "Rich curries with strong flavors.",
+      "restaurantId": "4",
+      "date": "2025-09-15T09:30:00.000Z"
+    },
+    {
+      "id": "11",
+      "stars": 5,
+      "comment": "Absolutely delicious butter chicken!",
+      "restaurantId": "4",
+      "date": "2025-09-16T14:00:00.000Z"
+    },
+    {
+      "id": "12",
+      "stars": 3,
+      "comment": "Food was good but naan was overcooked.",
+      "restaurantId": "4",
+      "date": "2025-09-17T17:45:00.000Z"
+    },
+    {
+      "id": "13",
+      "stars": 5,
+      "comment": "Best croissants in town!",
+      "restaurantId": "5",
+      "date": "2025-09-14T08:15:00.000Z"
+    },
+    {
+      "id": "14",
+      "stars": 4,
+      "comment": "Lovely ambiance and friendly staff.",
+      "restaurantId": "5",
+      "date": "2025-09-15T11:30:00.000Z"
+    },
+    {
+      "id": "15",
+      "stars": 5,
+      "comment": "Delicious pastries and coffee.",
+      "restaurantId": "5",
+      "date": "2025-09-16T13:45:00.000Z"
+    },
+    {
+      "id": "74f8",
+      "stars": 5,
+      "comment": "",
+      "restaurantId": "2",
+      "date": "2025-09-29T02:46:03.662Z"
+    },
+    {
+      "id": "033f",
+      "stars": 5,
+      "comment": "Test",
+      "restaurantId": "2",
+      "date": "2025-09-29T02:46:09.873Z"
+    },
+    {
+      "id": "40ba",
+      "stars": 5,
+      "comment": "Test",
+      "restaurantId": "2",
+      "date": "2025-09-29T02:46:33.922Z"
+    },
+    {
+      "id": "930a",
+      "stars": 5,
+      "comment": "",
+      "restaurantId": "2",
+      "date": "2025-09-29T02:47:23.798Z"
+    },
+    {
+      "id": "d6ee",
+      "stars": 5,
+      "comment": "Um coco",
+      "restaurantId": "2",
+      "date": "2025-09-29T02:47:38.512Z"
+    }
   ]
 }
