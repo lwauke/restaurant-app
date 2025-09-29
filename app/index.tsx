@@ -17,14 +17,14 @@ const LOGO = {
 
 const SCREEN_OPTIONS = {
   light: {
-    title: 'React Native Reusables',
+    title: 'Restaurants',
     headerTransparent: true,
     headerShadowVisible: true,
     headerStyle: { backgroundColor: THEME.light.background },
     headerRight: () => <ThemeToggle />,
   },
   dark: {
-    title: 'React Native Reusables',
+    title: 'Restaurants',
     headerTransparent: true,
     headerShadowVisible: true,
     headerStyle: { backgroundColor: THEME.dark.background },
@@ -41,25 +41,8 @@ export default function Screen() {
   const { colorScheme } = useColorScheme();
   const [loading, setLoading] = useState(true);
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
-  const data = [
-    { id: "1", title: "Bar do China", subtitle: "The best yakisoba ever" },
-    { id: "2", title: "Jacquin's restaurant", subtitle: "Don't turn off the freezer de notche!" },
-    { id: "3", title: "Third Item", subtitle: "This is the third" },
-  ];
-  const renderItem = ({ item }: { item: Restaurant }) => {
-    return (
-      <View className="items-center">
-        <Link href={`/restaurant/${item.id}`} asChild>
-          <Pressable>
-            <Text className="text-lg font-bold">{item.description}</Text>
-          </Pressable>
-        </Link>
-      </View>
-    );
-  };
 
   useEffect(() => {
-    console.log('fetching')
     getRestaurants()
       .then(setRestaurants)
       .then(() => setLoading(false))
@@ -86,7 +69,15 @@ export default function Screen() {
           <FlatList
             data={restaurants}
             keyExtractor={(item) => item.id}
-            renderItem={renderItem}
+            renderItem={({ item }: { item: Restaurant }) => (
+              <View className="items-center">
+                <Link href={`/restaurant/${item.id}`} asChild>
+                  <Pressable>
+                    <Text className="text-lg font-bold">{item.name}</Text>
+                  </Pressable>
+                </Link>
+              </View>
+            )}
           />
         </View>
       </View>

@@ -3,4 +3,5 @@ export interface Rating {
   stars: number;
   restaurantId: number;
   date: string;
+  comment?: string;
 }
