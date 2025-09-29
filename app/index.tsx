@@ -1,25 +1,31 @@
-import { Text } from '@/components/ui/text';
-import { Link } from 'expo-router';
 import { useState } from 'react';
-import { FlatList, Pressable, View } from 'react-native';
-import { Restaurant } from '../interfaces/restaurant.interface';
+import { View } from 'react-native';
 import { CuisineType } from '@/interfaces/cuisineType.interface';
 import { CuisineTypeTags } from '@/components/cuisineTypesTags';
 import { SearchBar } from '@/components/searchBar';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRestaurantsQuery } from '@/hooks/useRestaurant';
 import { useCuisineType } from '@/hooks/useCuisineType';
+import { RestaurantsList } from '@/components/restaurantsList';
 
 export default function Screen() {
   const insets = useSafeAreaInsets();
   const [selectedCuisinesIds, setSelectedCuisinesIds] = useState<string[]>([]);
   const [search, setSearch] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
-  const { data: restaurants = [], isLoading: restaurantsLoading } = useRestaurantsQuery({
+  const {
+    data: restaurants = [],
+    isLoading: restaurantsLoading,
+    error: restaurantsError
+  } = useRestaurantsQuery({
     name: searchQuery,
     cuisineTypeIds: selectedCuisinesIds,
   });
-  const { data: cuisines = [], isLoading: cuisinesLoading, error: cuisinesError } = useCuisineType();
+  const {
+    data: cuisines = [],
+    isLoading: cuisinesLoading,
+    error: cuisinesError
+  } = useCuisineType();
 
   const handlePress = (cuisineType: CuisineType) => {
     setSelectedCuisinesIds((cuisineTypeIds) => {
@@ -49,21 +55,10 @@ export default function Screen() {
         onChangeText={setSearch}
         onSubmit={() => setSearchQuery(search)}
       />
-      <FlatList
-        data={restaurants}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 32 }}
-        renderItem={({ item }: { item: Restaurant }) => (
-          <Link href={`/restaurant/${item.id}`} asChild>
-            <Pressable className="mb-4 rounded-xl bg-gray-100 p-4 shadow-md dark:bg-gray-800">
-              <Text className="text-lg font-bold text-gray-900 dark:text-white">{item.name}</Text>
-              <Text className="mt-1 text-gray-600 dark:text-gray-300">{item.description}</Text>
-              <Text className="mt-1 italic text-gray-600 dark:text-gray-300">
-                {item?.cuisineType?.description}
-              </Text>
-            </Pressable>
-          </Link>
-        )}
+      <RestaurantsList
+        restaurants={restaurants}
+        loading={restaurantsLoading}
+        error={restaurantsError}
       />
     </SafeAreaView>
   );

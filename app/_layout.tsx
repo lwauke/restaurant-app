@@ -68,15 +68,14 @@ export default function RootLayout() {
     return () => subscription.remove()
   }, [])
 
-
   return (
     <ThemeProvider value={NAV_THEME[colorScheme ?? 'light']}>
       <QueryClientProvider client={queryClient}>
         <Stack>
           <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
           <Stack.Screen name="index" options={options} />
-          <Stack.Screen name="restaurant" options={options} />
-          <Stack.Screen name="rating" options={options} />
+          <Stack.Screen name="restaurant/[id]" options={{ title: 'Details' }} />
+          <Stack.Screen name="rating/[id]" options={{ title: 'Rating' }}/>
         </Stack>
         <PortalHost />
       </QueryClientProvider>
