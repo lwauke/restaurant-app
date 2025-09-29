@@ -1,3 +1,4 @@
+import { Text } from '@/components/ui/text';
 import '@/global.css';
 
 import { NAV_THEME } from '@/lib/theme';
