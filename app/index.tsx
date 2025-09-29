@@ -1,111 +1,81 @@
-import { Button } from '@/components/ui/button';
-import { Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
-import { THEME } from '@/lib/theme';
-import { Link, Stack } from 'expo-router';
-import { MoonStarIcon, SunIcon } from 'lucide-react-native';
-import { useColorScheme } from 'nativewind';
-import { useEffect, useState } from 'react';
-import { Image, type ImageStyle, View, FlatList, Pressable, SafeAreaView } from 'react-native';
-import { getRestaurants } from '../api/restaurants';
-import { Restaurant } from '../interfaces/restaurant';
-
-const LOGO = {
-  light: require('@/assets/images/react-native-reusables-light.png'),
-  dark: require('@/assets/images/react-native-reusables-dark.png'),
-};
-
-const SCREEN_OPTIONS = {
-  light: {
-    title: 'Restaurants',
-    headerTransparent: true,
-    headerShadowVisible: true,
-    headerStyle: { backgroundColor: THEME.light.background },
-    headerRight: () => <ThemeToggle />,
-  },
-  dark: {
-    title: 'Restaurants',
-    headerTransparent: true,
-    headerShadowVisible: true,
-    headerStyle: { backgroundColor: THEME.dark.background },
-    headerRight: () => <ThemeToggle />,
-  },
-};
-
-const IMAGE_STYLE: ImageStyle = {
-  height: 76,
-  width: 76,
-};
+import { Link } from 'expo-router';
+import { useState } from 'react';
+import { FlatList, Pressable, View } from 'react-native';
+import { Restaurant } from '../interfaces/restaurant.interface';
+import { CuisineType } from '@/interfaces/cuisineType.interface';
+import { CuisineTypeTags } from '@/components/cuisineTypesTags';
+import { SearchBar } from '@/components/searchBar';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useRestaurants } from '@/hooks/useRestaurants';
+import { useCuisineTypes } from '@/hooks/useCuisineTypes';
 
 export default function Screen() {
-  const { colorScheme } = useColorScheme();
-  const [loading, setLoading] = useState(true);
-  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+  const insets = useSafeAreaInsets();
+  const [selectedCuisinesIds, setSelectedCuisinesIds] = useState<string[]>([]);
+  const [search, setSearch] = useState("");
 
-  useEffect(() => {
-    getRestaurants()
-      .then(setRestaurants)
-      .then(() => setLoading(false))
-      .catch(console.log);
-  }, []);
+  // Fetch restaurants with React Query
+  const { data: restaurants = [], isLoading: restaurantsLoading } = useRestaurants({
+    name: search,
+    cuisineTypeIds: selectedCuisinesIds,
+  });
 
-  if (loading) {
+  // Fetch cuisine types with React Query
+  const { data: cuisines = [], isLoading: cuisinesLoading } = useCuisineTypes();
+
+  const isLoading = restaurantsLoading || cuisinesLoading;
+
+  if (isLoading) {
     return (
-      <>
-        <Stack.Screen options={SCREEN_OPTIONS[colorScheme ?? 'light']} />
-        <SafeAreaView className="flex-1 items-center justify-center p-4">
-          <Text>Loading...</Text>
-        </SafeAreaView>
-      </>
+      <SafeAreaView className="items-center justify-center p-4">
+        <Text>Loading...</Text>
+      </SafeAreaView>
     );
   }
 
-  return (
-    <>
-      <Stack.Screen options={SCREEN_OPTIONS[colorScheme ?? 'light']} />
-      <SafeAreaView className="flex-1 bg-white dark:bg-black">
-        <View className="items-center py-4">
-          <Image
-            source={LOGO[colorScheme ?? 'light']}
-            style={IMAGE_STYLE}
-            resizeMode="contain"
-          />
-        </View>
+  const handlePress = (cuisineType: CuisineType) => {
+    setSelectedCuisinesIds(cuisineTypeIds => {
+      const isSelected = cuisineTypeIds.includes(cuisineType.id);
+      return isSelected
+        ? cuisineTypeIds.filter(id => id !== cuisineType.id)
+        : [...cuisineTypeIds, cuisineType.id];
+    });
+  };
 
-        <FlatList
-          data={restaurants}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 32 }}
-          renderItem={({ item }: { item: Restaurant }) => (
-            <Link href={`/restaurant/${item.id}`} asChild>
-              <Pressable className="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 mb-4 shadow-md">
-                <Text className="text-lg font-bold text-gray-900 dark:text-white">{item.name}</Text>
-                <Text className="text-gray-600 dark:text-gray-300 mt-1">{item.description}</Text>
-              </Pressable>
-            </Link>
-          )}
+  const handleSearch = () => {
+    // React Query will automatically refetch when dependencies change
+    // No manual fetch needed
+  };
+
+  return (
+    <SafeAreaView className="flex-1 bg-white dark:bg-black justify-start" edges={['top', 'left', 'right']}>
+      <View style={{ marginTop: insets.top + 26 }}>
+        <CuisineTypeTags
+          onPress={handlePress}
+          selectedCuisinesIds={selectedCuisinesIds}
+          cuisines={cuisines}
         />
-      </SafeAreaView>
-    </>
-  );
-}
-
-const THEME_ICONS = {
-  light: SunIcon,
-  dark: MoonStarIcon,
-};
-
-function ThemeToggle() {
-  const { colorScheme, toggleColorScheme } = useColorScheme();
-
-  return (
-    <Button
-      onPressIn={toggleColorScheme}
-      size="icon"
-      variant="ghost"
-      className="rounded-full web:mx-4"
-    >
-      <Icon as={THEME_ICONS[colorScheme ?? 'light']} className="size-5" />
-    </Button>
+      </View>
+      <SearchBar
+        placeholder="Restaurant"
+        onChangeText={setSearch}
+        onSubmit={handleSearch}
+      />
+      <FlatList
+        data={restaurants}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 32 }}
+        renderItem={({ item }: { item: Restaurant }) => (
+          <Link href={`/restaurant/${item.id}`} asChild>
+            <Pressable className="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 mb-4 shadow-md">
+              <Text className="text-lg font-bold text-gray-900 dark:text-white">{item.name}</Text>
+              <Text className="text-gray-600 dark:text-gray-300 mt-1">{item.description}</Text>
+              <Text className="italic text-gray-600 dark:text-gray-300 mt-1">{item?.cuisineType?.description}</Text>
+            </Pressable>
+          </Link>
+        )}
+      />
+    </SafeAreaView>
   );
 }

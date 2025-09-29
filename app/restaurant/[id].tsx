@@ -1,115 +1,64 @@
-import { Button } from '@/components/ui/button';
-import { Icon } from '@/components/ui/icon';
-import { Text } from '@/components/ui/text';
-import { THEME } from '@/lib/theme';
-import { Link, Stack, useRouter } from 'expo-router';
-import { MoonStarIcon, SunIcon } from 'lucide-react-native';
-import { useColorScheme } from 'nativewind';
-import { useEffect, useState } from 'react';
-import { FlatList, ScrollViewBase, View } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
-import { Restaurant } from '../../interfaces/restaurant';
-import { getRestaurantById } from '../../api/restaurants';
-import { useRoute } from '@react-navigation/native';
-import { Rating } from '@/interfaces/rating';
-import { SafeAreaView } from 'react-native-safe-area-context';
+// app/restaurant/[id].tsx
+import { View, FlatList } from "react-native";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { useQuery } from "@tanstack/react-query";
+import { getRestaurantById } from "@/api/restaurant";
+import { Text } from "@/components/ui/text";
+import { Rating } from "@/components/ui/rating";
+import { Button } from "@/components/ui/button";
+import { useSubmitRating } from "@/hooks/useSubmitRating";
+import { useRestaurant } from "@/hooks/useRestaurant";
 
-const SCREEN_OPTIONS = {
-  light: {
-    headerTransparent: true,
-    headerShadowVisible: true,
-    headerStyle: { backgroundColor: THEME.light.background },
-    headerRight: () => <ThemeToggle />,
-  },
-  dark: {
-    headerTransparent: true,
-    headerShadowVisible: true,
-    headerStyle: { backgroundColor: THEME.dark.background },
-    headerRight: () => <ThemeToggle />,
-  },
-};
-
-export default function Screen() {
-  const { colorScheme } = useColorScheme();
-  const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
-  const [loading, setLoading] = useState(true);
-  const { id } = useLocalSearchParams();
+export default function RestaurantScreen() {
   const router = useRouter();
+  const { id } = useLocalSearchParams<{ id: string }>();
 
-  useEffect(() => {
-    getRestaurantById(id as string)
-      .then(setRestaurant)
-      .then(() => setLoading(false));
-  }, []);
+  const { data: restaurant, isLoading, error } = useQuery({
+    queryKey: ["restaurant", id],
+    queryFn: () => getRestaurantById(id),
+    enabled: !!id,
+  });
 
-  if (loading) {
+  const submitRatingMutation = useSubmitRating(id);
+
+  if (isLoading) {
     return (
-      <>
-        <Stack.Screen options={SCREEN_OPTIONS[colorScheme ?? 'light']} />
-        <View className="flex-1 items-center justify-center gap-8 p-4">
-          <Text>loading...</Text>
-        </View>
-      </>
-    )
+      <View className="flex-1 items-center justify-center">
+        <Text>Loading restaurant...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View className="flex-1 items-center justify-center">
+        <Text>Error loading restaurant.</Text>
+      </View>
+    );
   }
 
   return (
-    <>
-      <Stack.Screen
-        options={{
-          ...SCREEN_OPTIONS[colorScheme ?? 'light'],
-          headerTitle: restaurant?.name
-        }}
+    <View className="flex-1 p-4 gap-4">
+      <Text className="text-xl font-bold">{restaurant?.name}</Text>
+      <Text className="text-gray-600">{restaurant?.description}</Text>
+
+      <Text className="mt-4 text-lg font-semibold">Ratings</Text>
+      <FlatList
+        data={restaurant?.ratings}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <View className="p-2 border-b border-gray-200">
+            <Rating max={5} initial={item.stars}/>
+            <Text>{item.comment}</Text>
+          </View>
+        )}
       />
-      <SafeAreaView>
-        <FlatList
-          data={restaurant?.ratings || []}
-          keyExtractor={(item) => item.id}
-          contentContainerStyle={{ padding: 16, paddingBottom: 32 }}
-          ListHeaderComponent={() => (
-            <View className="mb-6 mt-14">
-              <Text className="mb-2 text-gray-700 dark:text-gray-300">
-                {restaurant?.description}
-              </Text>
-              <Text className="mb-2 italic text-gray-500 dark:text-gray-400">
-                Cuisine: {restaurant?.cuisineType?.description}
-              </Text>
-              <Text className="mb-4 font-semibold text-gray-900 dark:text-white">
-                Rating: {restaurant?.ratingAverage?.toFixed(2)}
-              </Text>
-              <Button
-                onPress={() => router.navigate(`/rating/${id}?restaurantName=${restaurant?.name}`)}
-                className="mb-4 w-full justify-center"
-              >
-                <Text className="text-white dark:text-black text-center">Rate Restaurant</Text>
-              </Button>
-            </View>
-          )}
-          renderItem={({ item }: { item: Rating }) => (
-            <View className="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 mb-3 shadow">
-              <Text className="font-semibold text-gray-900 dark:text-white">
-                ⭐ {item.stars} — {item.date.split('T')[0]}
-              </Text>
-              <Text className="text-gray-700 dark:text-gray-300 mt-1">{item.comment}</Text>
-            </View>
-          )}
-        />
-      </SafeAreaView>
-    </>
-  );
-}
 
-const THEME_ICONS = {
-  light: SunIcon,
-  dark: MoonStarIcon,
-};
-
-function ThemeToggle() {
-  const { colorScheme, toggleColorScheme } = useColorScheme();
-
-  return (
-    <Text>
-
-    </Text>
+      <Button
+        onPress={() => router.navigate(`/rating/${restaurant?.id}`) }
+      >
+        <Text>Leave 5-star Rating</Text>
+      </Button>
+    </View>
   );
 }

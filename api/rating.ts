@@ -1,4 +1,4 @@
-import { SubmitRatingDTO } from "@/dtos/submitRating";
+import { SubmitRatingDTO } from "@/dtos/submitRating.dto";
 import { httpClient } from "./axios";
 
 export async function submitRating({

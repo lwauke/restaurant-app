@@ -1,5 +1,5 @@
-import { CuisineType } from "./cuisineType";
-import { Rating } from "./rating";
+import { CuisineType } from "./cuisineType.interface";
+import { Rating } from "./rating.interface";
 
 export interface Restaurant {
   id: string;

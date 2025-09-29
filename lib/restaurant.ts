@@ -1,4 +1,4 @@
-import { Rating } from "@/interfaces/rating";
+import { Rating } from "@/interfaces/rating.interface";
 import { sum } from "./utils";
 
 export const getRatingAverage = (rates: Rating[]) => {
