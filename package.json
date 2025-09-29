@@ -46,7 +46,6 @@
   "devDependencies": {
     "@babel/core": "^7.26.0",
     "@eslint/js": "^9.36.0",
-    "@tanstack/eslint-plugin-query": "^4.39.1",
     "@types/react": "~19.0.14",
     "@types/react-native-dotenv": "^0.2.2",
     "@typescript-eslint/eslint-plugin": "^8.44.1",
