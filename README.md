@@ -1,4 +1,4 @@
-# Minimal Template
+# Restaurants app 
 
 This is a [React Native](https://reactnative.dev/) project built with [Expo](https://expo.dev/) and [React Native Reusables](https://reactnativereusables.com).
 
@@ -10,16 +10,15 @@ npx @react-native-reusables/cli@latest init -t restaurant-app
 
 ## Getting Started
 
+Before installing your deps, run:
+```
+nvm use
+```
+
 To run the development server:
 
 ```bash
     npm run dev
-    # or
-    yarn dev
-    # or
-    pnpm dev
-    # or
-    bun dev
 ```
 
 This will start the Expo Dev Server. Open the app in:
@@ -29,6 +28,16 @@ This will start the Expo Dev Server. Open the app in:
 - **Web**: press `w` to run in a browser
 
 You can also scan the QR code using the [Expo Go](https://expo.dev/go) app on your device. This project fully supports running in Expo Go for quick testing on physical devices.
+
+## Additional steps
+- run the mock server
+```
+npm run server
+```
+- add a `.env` file with your mock API url
+```bash
+hostname -I | awk '{print $1}' | xargs -I % echo "EXPO_PUBLIC_API_URL=http://%:3000" > .env
+```
 
 ## Adding components
 
@@ -43,31 +52,19 @@ npx react-native-reusables/cli@latest add [...components]
 If you don't specify any component names, you'll be prompted to select which components to add interactively. Use the `--all` flag to install all available components at once.
 
 ## Project Features
+- List restaurants with names, cuisine types, and average ratings
+- View restaurant details with existing reviews
+- Write and submit new reviews with 1-5 star ratings
+- Search restaurants by name or cuisine type
+- Simple navigation between screens
+- Add "Loading..." feedback while fetching data
+- Auto-refresh data when app comes to foreground
+- dark mode toggle
 
-- ⚛️ Built with [Expo Router](https://expo.dev/router)
-- 🎨 Styled with [Tailwind CSS](https://tailwindcss.com/) via [Nativewind](https://www.nativewind.dev/)
-- 📦 UI powered by [React Native Reusables](https://github.com/founded-labs/react-native-reusables)
-- 🚀 New Architecture enabled
-- 🔥 Edge to Edge enabled
-- 📱 Runs on iOS, Android, and Web
 
-## Learn More
-
-To dive deeper into the technologies used:
-
-- [React Native Docs](https://reactnative.dev/docs/getting-started)
-- [Expo Docs](https://docs.expo.dev/)
-- [Nativewind Docs](https://www.nativewind.dev/)
-- [React Native Reusables](https://reactnativereusables.com)
-
-## Deploy with EAS
-
-The easiest way to deploy your app is with [Expo Application Services (EAS)](https://expo.dev/eas).
-
-- [EAS Build](https://docs.expo.dev/build/introduction/)
-- [EAS Updates](https://docs.expo.dev/eas-update/introduction/)
-- [EAS Submit](https://docs.expo.dev/submit/introduction/)
-
----
-
-If you enjoy using React Native Reusables, please consider giving it a ⭐ on [GitHub](https://github.com/founded-labs/react-native-reusables). Your support means a lot!
+### Requirements in progress
+- linter (in progress)
+- tests (in progress)
+- responsiveness (testing)
+- git hooks for testing and linting on pre-push and commit; commit linter
+- pull to request (in progress)
