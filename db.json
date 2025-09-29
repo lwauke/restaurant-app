@@ -165,6 +165,13 @@
       "restaurantId": "1",
       "date": "2025-09-29T12:45:58.067Z",
       "id": "PFDg-tD"
+    },
+    {
+      "stars": 4,
+      "comment": "Good",
+      "restaurantId": "4",
+      "date": "2025-09-29T14:08:14.354Z",
+      "id": "r6NNZqT"
     }
   ]
 }

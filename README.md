@@ -1,4 +1,4 @@
-# Restaurants app 
+# Restaurants app
 
 This is a [React Native](https://reactnative.dev/) project built with [Expo](https://expo.dev/) and [React Native Reusables](https://reactnativereusables.com).
 
@@ -11,6 +11,7 @@ npx @react-native-reusables/cli@latest init -t restaurant-app
 ## Getting Started
 
 Before installing your deps, run:
+
 ```
 nvm use
 ```
@@ -30,11 +31,15 @@ This will start the Expo Dev Server. Open the app in:
 You can also scan the QR code using the [Expo Go](https://expo.dev/go) app on your device. This project fully supports running in Expo Go for quick testing on physical devices.
 
 ## Additional steps
+
 - run the mock server
+
 ```
 npm run server
 ```
+
 - add a `.env` file with your mock API url
+
 ```bash
 hostname -I | awk '{print $1}' | xargs -I % echo "EXPO_PUBLIC_API_URL=http://%:3000" > .env
 ```
@@ -52,6 +57,7 @@ npx react-native-reusables/cli@latest add [...components]
 If you don't specify any component names, you'll be prompted to select which components to add interactively. Use the `--all` flag to install all available components at once.
 
 ## Project Features
+
 - List restaurants with names, cuisine types, and average ratings
 - View restaurant details with existing reviews
 - Write and submit new reviews with 1-5 star ratings
@@ -61,10 +67,9 @@ If you don't specify any component names, you'll be prompted to select which com
 - Auto-refresh data when app comes to foreground
 - dark mode toggle
 
-
 ### Requirements in progress
+
 - linter (in progress)
 - tests (in progress)
-- responsiveness (testing)
 - git hooks for testing and linting on pre-push and commit; commit linter
 - pull to request (in progress)

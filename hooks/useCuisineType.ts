@@ -1,9 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
-import { getCuisineTypes } from '@/api/cuisineType';
+import { useQuery } from "@tanstack/react-query";
+import { getCuisineTypes } from "@/api/cuisineType";
 
 export function useCuisineType() {
   return useQuery({
-    queryKey: ['cuisineType'],
+    queryKey: ["cuisineType"],
     queryFn: () => getCuisineTypes(),
   });
 }

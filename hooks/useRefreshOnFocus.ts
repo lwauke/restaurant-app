@@ -1,23 +1,23 @@
-import React from 'react'
-import { useFocusEffect } from '@react-navigation/native'
-import { useQueryClient } from '@tanstack/react-query'
+import React from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function useRefreshOnFocus() {
-  const queryClient = useQueryClient()
-  const firstTimeRef = React.useRef(true)
+  const queryClient = useQueryClient();
+  const firstTimeRef = React.useRef(true);
 
   useFocusEffect(
     React.useCallback(() => {
       if (firstTimeRef.current) {
-        firstTimeRef.current = false
-        return
+        firstTimeRef.current = false;
+        return;
       }
 
       queryClient.refetchQueries({
-        queryKey: ['posts'],
+        queryKey: ["posts"],
         stale: true,
-        type: 'active',
-      })
-    }, [queryClient]),
-  )
+        type: "active",
+      });
+    }, [queryClient])
+  );
 }

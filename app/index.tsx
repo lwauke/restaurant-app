@@ -1,22 +1,22 @@
-import { useState } from 'react';
-import { View } from 'react-native';
-import { CuisineType } from '@/interfaces/cuisineType.interface';
-import { CuisineTypeTags } from '@/components/cuisineTypesTags';
-import { SearchBar } from '@/components/searchBar';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useRestaurantsQuery } from '@/hooks/useRestaurant';
-import { useCuisineType } from '@/hooks/useCuisineType';
-import { RestaurantsList } from '@/components/restaurantsList';
+import { useState } from "react";
+import { View } from "react-native";
+import { CuisineType } from "@/interfaces/cuisineType.interface";
+import { CuisineTypeTags } from "@/components/cuisineTypesTags";
+import { SearchBar } from "@/components/searchBar";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import { useRestaurantsQuery } from "@/hooks/useRestaurant";
+import { useCuisineType } from "@/hooks/useCuisineType";
+import { RestaurantsList } from "@/components/restaurantsList";
 
 export default function Screen() {
   const insets = useSafeAreaInsets();
   const [selectedCuisinesIds, setSelectedCuisinesIds] = useState<string[]>([]);
-  const [search, setSearch] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [search, setSearch] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const {
     data: restaurants = [],
     isLoading: restaurantsLoading,
-    error: restaurantsError
+    error: restaurantsError,
   } = useRestaurantsQuery({
     name: searchQuery,
     cuisineTypeIds: selectedCuisinesIds,
@@ -24,7 +24,7 @@ export default function Screen() {
   const {
     data: cuisines = [],
     isLoading: cuisinesLoading,
-    error: cuisinesError
+    error: cuisinesError,
   } = useCuisineType();
 
   const handlePress = (cuisineType: CuisineType) => {
@@ -39,7 +39,7 @@ export default function Screen() {
   return (
     <SafeAreaView
       className="flex-1 justify-start bg-white dark:bg-black"
-      edges={['top', 'left', 'right']}>
+      edges={["top", "left", "right"]}>
       {/* todo fix this height */}
       <View style={{ marginTop: insets.top + 26 }}>
         <CuisineTypeTags
